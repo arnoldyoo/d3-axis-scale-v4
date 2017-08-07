@@ -22,10 +22,8 @@ export class ChartScale {
   }
 
   _generateScale() {
-    // console.log('range : ', this.range);
-    // console.log('scale width : ', this.width);
-    // console.log('scale height : ', this.height);
     if (this.type === 'numeric') {
+      // this.domain.push(0);
       this.domain.push(min(this.data));
       const maxData = max(this.data);
       this.domain.push(maxData + (maxData * 0.1));

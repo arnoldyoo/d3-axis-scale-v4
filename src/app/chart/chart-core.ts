@@ -1,8 +1,6 @@
+import { ChartConfigInterface, ChartAxisParamInterface } from './chart-config.interface';
 import { ChartAxis } from './chart-axis';
 import { ChartScale } from './chart-scale';
-// export interface ChartConfig {
-
-// }
 
 export class ChartCore {
   scales: any = {};
@@ -18,7 +16,7 @@ export class ChartCore {
   width: number;
   height: number;
 
-  constructor(chartConfig: any) {
+  constructor(chartConfig: ChartConfigInterface) {
     if (chartConfig) {
       this.config = chartConfig;
       this.target = chartConfig.info.target;
@@ -59,10 +57,11 @@ export class ChartCore {
       return temp;
     })
     this.scaleFields.map((info: any) => {
-      this.domain = this.dataProvider.map((d: any) => {
+      // numeric의 경우 field 타입이 object이면 loop돌아 field의 max/min을 찾아내야함
+      const data = this.dataProvider.map((d: any) => {
         return d[info.field];
       });
-      this.scales[info.field] = new ChartScale(this.domain, info.type, info.position, this.width, this.height);
+      this.scales[info.field] = new ChartScale(data, info.type, info.position, this.width, this.height);
     });
 
   }
@@ -75,7 +74,7 @@ export class ChartCore {
       const data = this.dataProvider.map((d: any) => {
         return d[axis.field];
       })
-      const axisConfig = {
+      const axisConfig: ChartAxisParamInterface = {
         field: axis.field,
         type: axis.type,
         scale: this.scales[axis.field].scale,

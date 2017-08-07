@@ -1,3 +1,4 @@
+import { ChartConfigInterface } from './chart/chart-config.interface';
 import { ChartCore } from './chart/chart-core';
 import { select } from 'd3-selection';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
@@ -23,7 +24,7 @@ export class AppComponent implements OnInit {
     this.height = this.svgContariner.nativeElement.offsetHeight;
     this.svgTarget = select('svg').attr('width', this.width).attr('height', this.height);
 
-    const config = {
+    const config: ChartConfigInterface = {
       info: {
         width: this.width,
         height: this.height,
@@ -34,22 +35,33 @@ export class AppComponent implements OnInit {
         {
           field: 'category',
           type: 'category',
-          position: 'xb'
+          position: 'xb',
+          displayStandard: 'category'
         },
         {
           field: 'numeric1',
           type: 'numeric',
-          position: 'yl'
+          position: 'yl',
+          displayStandard: 'numeric1'
         },
         {
           field: 'numeric2',
           type: 'numeric',
-          position: 'yr'
+          position: 'yr',
+          displayStandard: 'numeric2'
         },
         {
           field: 'datetime',
           type: 'datetime',
-          position: 'xt'
+          position: 'xt',
+          displayStandard: 'datetime'
+        }
+      ],
+      series: [
+        {
+          fieldX: 'category',
+          fieldY: 'numeric1',
+          type: 'column'
         }
       ]
     }
