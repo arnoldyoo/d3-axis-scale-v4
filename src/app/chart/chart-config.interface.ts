@@ -23,6 +23,7 @@ export interface ChartSeriesConfigInterface {
   fieldX: string;
   fieldY: string;
   type: string;
+  displayStandard?: string;
 }
 
 export interface ChartAxisParamInterface extends ChartAxisConfigInterface {
@@ -32,4 +33,13 @@ export interface ChartAxisParamInterface extends ChartAxisConfigInterface {
   data: Array<any>;
   scale: any;
   target: any;
+}
+
+export interface ChartSeriesParamInterface extends ChartSeriesConfigInterface {
+  scaleX: any;
+  scaleY: any;
+  target: any;
+  data: Array<any>;
+  width: number;
+  height: number;
 }

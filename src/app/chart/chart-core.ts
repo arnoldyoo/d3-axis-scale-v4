@@ -1,10 +1,11 @@
-import { ChartConfigInterface, ChartAxisParamInterface } from './chart-config.interface';
+import { ChartConfigInterface, ChartAxisParamInterface, ChartAxisConfigInterface, ChartSeriesConfigInterface, ChartSeriesParamInterface } from './chart-config.interface';
 import { ChartAxis } from './chart-axis';
 import { ChartScale } from './chart-scale';
 
 export class ChartCore {
   scales: any = {};
   axis: any = {};
+  series: any = {};
   config: any;
   _dataProvider: Array<any>;
   domain: Array<Array<any>> = [];
@@ -70,14 +71,14 @@ export class ChartCore {
     this.axisGroupElement = this.target.append('g')
             .attr('class', 'axis')
             .attr('transform', 'translate(0,0)');
-    this.config.axis.map((axis: any) => {
+    this.config.axis.map((axis: ChartAxisConfigInterface) => {
       const data = this.dataProvider.map((d: any) => {
-        return d[axis.field];
+        return d[<string>axis.field];
       })
       const axisConfig: ChartAxisParamInterface = {
         field: axis.field,
         type: axis.type,
-        scale: this.scales[axis.field].scale,
+        scale: this.scales[<string>axis.field].scale,
         position: axis.position,
         data: data,
         width: this.width,
@@ -85,12 +86,19 @@ export class ChartCore {
         target: this.axisGroupElement,
         margin: this.margin
       }
-      this.axis[axis.field] = new ChartAxis(axisConfig);
+      this.axis[<string>axis.field] = new ChartAxis(axisConfig);
     })
   }
 
   _createSeries() {
-
+    this.seriesGroupElement = this.target.append('g')
+            .attr('class', 'series')
+            .attr('transform', 'translate(0,0)');
+    this.config.series.map((series: ChartSeriesConfigInterface) => {
+      // const seriesConfig: ChartSeriesParamInterface = {
+        
+      // }
+    })
   }
 
   _setDefaultData(): Array<any> {

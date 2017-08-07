@@ -61,7 +61,8 @@ export class AppComponent implements OnInit {
         {
           fieldX: 'category',
           fieldY: 'numeric1',
-          type: 'column'
+          type: 'column',
+          displayStandard: 'numeric1'
         }
       ]
     }
