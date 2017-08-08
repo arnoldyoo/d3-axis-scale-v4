@@ -45,3 +45,11 @@ export interface ChartSeriesParamInterface extends ChartSeriesConfigInterface {
   width: number;
   height: number;
 }
+
+export interface ScaleParamInterface {
+  data: Array<any> | any;
+  type: string;
+  position: string;
+  width: number;
+  height: number;
+}

@@ -4,7 +4,8 @@ import {
   ChartAxisParamInterface,
   ChartAxisConfigInterface,
   ChartSeriesConfigInterface,
-  ChartSeriesParamInterface
+  ChartSeriesParamInterface,
+  ScaleParamInterface
 } from './chart-config.interface';
 import { ChartAxis } from './chart-axis';
 import { ChartScale } from './chart-scale';
@@ -70,7 +71,14 @@ export class ChartCore {
         // info.type이 numeric의 경우 field 타입이 object이면 loop돌아 field의 max/min을 찾아내야함
         return d[info.field];
       });
-      this.scales[info.displayStandard] = new ChartScale(data, info.type, info.position, this.width, this.height);
+      const scaleConfig: ScaleParamInterface = {
+        data: data,
+        type: info.type,
+        position: info.position,
+        width: this.width,
+        height: this.height
+      }
+      this.scales[info.displayStandard] = new ChartScale(scaleConfig);
     });
 
   }
@@ -102,7 +110,7 @@ export class ChartCore {
   _createSeries() {
     this.seriesGroupElement = this.target.append('g')
             .attr('class', 'series')
-            .attr('transform', 'translate(0,0)');
+            .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
     this.config.series.map((series: ChartSeriesConfigInterface) => {
 
       const seriesConfig: ChartSeriesParamInterface = {

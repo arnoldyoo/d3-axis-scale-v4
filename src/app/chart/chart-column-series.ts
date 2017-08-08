@@ -50,10 +50,34 @@ export class ChartColumnSeries {
         this.w = this.scaleX.bandwidth();
       }
       if (this.scaleY) {
-        console.log(data[this.fieldY]);
         this.y = this.scaleY(data[this.fieldY]);
         this.h = this.scaleY.range()[0] - this.y;
       }
-      console.log(`index ${index} position ${this.x} / ${this.w} / ${this.y} / ${this.h}`);
+      this._createSeries(data[this.fieldY], index);
+    }
+
+    _createSeries(value: any, index: number) {
+      let rectElement: any = this.target.select(`.${this.displayStandard + index}`);
+      if (!rectElement._groups[0][0]) {
+        rectElement = this._createItem(value, index);
+      } else {
+        rectElement.datum(value);
+      }
+      rectElement
+                .attr('x', this.x)
+                .attr('y', this.y)
+                .attr('width', this.w)
+                .attr('height', this.h);
+    }
+
+    _createItem(value: any, index: number) {
+      console.log(index);
+      const rectElement: any = this.target.datum(value)
+                                        .append('rect')
+                                        .attr('class', this.displayStandard + index)
+                                        .attr('value', value)
+                                        .attr('fill', 'red');
+
+      return rectElement;
     }
 }

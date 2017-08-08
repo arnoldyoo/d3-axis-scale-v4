@@ -1,3 +1,4 @@
+import { ScaleParamInterface } from './chart-config.interface';
 import {scaleLinear, scaleOrdinal, scaleTime, scaleBand} from 'd3-scale';
 import {max, min} from 'd3-array';
 
@@ -11,12 +12,12 @@ export class ChartScale {
   domain: Array<any> = [];
   position: string;
 
-  constructor(data: Array<any>, type: string, position: string, width: number, height: number) {
-    this.type = type;
-    this.data = data;
-    this.width = width;
-    this.height = height;
-    this.position = position;
+  constructor(config: ScaleParamInterface) {
+    this.type = config.type;
+    this.data = config.data;
+    this.width = config.width;
+    this.height = config.height;
+    this.position = config.position;
     this._setRange();
     this._generateScale();
   }
