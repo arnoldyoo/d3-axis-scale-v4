@@ -1,11 +1,18 @@
-import { ChartConfigInterface, ChartAxisParamInterface, ChartAxisConfigInterface, ChartSeriesConfigInterface, ChartSeriesParamInterface } from './chart-config.interface';
+import { ChartColumnSeries } from './chart-column-series';
+import {
+  ChartConfigInterface,
+  ChartAxisParamInterface,
+  ChartAxisConfigInterface,
+  ChartSeriesConfigInterface,
+  ChartSeriesParamInterface
+} from './chart-config.interface';
 import { ChartAxis } from './chart-axis';
 import { ChartScale } from './chart-scale';
 
 export class ChartCore {
   scales: any = {};
-  axis: any = {};
-  series: any = {};
+  axis: Array<any> = [];
+  series: Array<any> = [];
   config: any;
   _dataProvider: Array<any>;
   domain: Array<Array<any>> = [];
@@ -38,7 +45,6 @@ export class ChartCore {
   }
 
   set dataProvider(value: Array<any>) {
-
     if (!value) {
       this._dataProvider = this._setDefaultData();
     } else {
@@ -46,6 +52,7 @@ export class ChartCore {
     }
     this._createScale();
     this._createAxis();
+    this._createSeries();
   }
 
   _createScale() {
@@ -53,16 +60,17 @@ export class ChartCore {
       const temp = {
         type: a['type'],
         field: a['field'],
-        position: a['position']
+        position: a['position'],
+        displayStandard: a['displayStandard']
       }
       return temp;
     })
     this.scaleFields.map((info: any) => {
-      // numeric의 경우 field 타입이 object이면 loop돌아 field의 max/min을 찾아내야함
       const data = this.dataProvider.map((d: any) => {
+        // info.type이 numeric의 경우 field 타입이 object이면 loop돌아 field의 max/min을 찾아내야함
         return d[info.field];
       });
-      this.scales[info.field] = new ChartScale(data, info.type, info.position, this.width, this.height);
+      this.scales[info.displayStandard] = new ChartScale(data, info.type, info.position, this.width, this.height);
     });
 
   }
@@ -73,20 +81,21 @@ export class ChartCore {
             .attr('transform', 'translate(0,0)');
     this.config.axis.map((axis: ChartAxisConfigInterface) => {
       const data = this.dataProvider.map((d: any) => {
-        return d[<string>axis.field];
+        return d[axis.displayStandard];
       })
       const axisConfig: ChartAxisParamInterface = {
         field: axis.field,
         type: axis.type,
-        scale: this.scales[<string>axis.field].scale,
+        scale: this.scales[axis.displayStandard].scale,
         position: axis.position,
         data: data,
         width: this.width,
         height: this.height,
         target: this.axisGroupElement,
-        margin: this.margin
+        margin: this.margin,
+        displayStandard: axis.displayStandard
       }
-      this.axis[<string>axis.field] = new ChartAxis(axisConfig);
+      this.axis.push(new ChartAxis(axisConfig));
     })
   }
 
@@ -95,9 +104,26 @@ export class ChartCore {
             .attr('class', 'series')
             .attr('transform', 'translate(0,0)');
     this.config.series.map((series: ChartSeriesConfigInterface) => {
-      // const seriesConfig: ChartSeriesParamInterface = {
-        
-      // }
+
+      const seriesConfig: ChartSeriesParamInterface = {
+        width: this.width,
+        height: this.height,
+        scaleX: this.scales[series.fieldX].scale,
+        scaleY: this.scales[series.fieldY].scale,
+        target: this.seriesGroupElement,
+        dataProvider: this.dataProvider,
+        displayStandard: series.displayStandard,
+        fieldX: series.fieldX,
+        fieldY: series.fieldY,
+        type: series.type
+      }
+      let seriesTemp: any;
+      if (series.type === 'column') {
+        seriesTemp = new ChartColumnSeries(seriesConfig);
+      } else {
+
+      }
+      this.series.push(seriesTemp);
     })
   }
 

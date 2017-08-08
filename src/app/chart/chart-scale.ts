@@ -23,6 +23,7 @@ export class ChartScale {
 
   _generateScale() {
     if (this.type === 'numeric') {
+
       // this.domain.push(0);
       this.domain.push(min(this.data));
       const maxData = max(this.data);

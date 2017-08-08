@@ -30,7 +30,8 @@ export interface ChartAxisParamInterface extends ChartAxisConfigInterface {
   width: number;
   height: number;
   margin: any;
-  data: Array<any>;
+  dataProvider?: Array<any> | any;
+  data?: Array<any> | any;
   scale: any;
   target: any;
 }
@@ -39,7 +40,8 @@ export interface ChartSeriesParamInterface extends ChartSeriesConfigInterface {
   scaleX: any;
   scaleY: any;
   target: any;
-  data: Array<any>;
+  dataProvider?: Array<any> | any;
+  data?: Array<any> | any;
   width: number;
   height: number;
 }
