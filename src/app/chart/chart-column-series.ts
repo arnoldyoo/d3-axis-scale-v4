@@ -1,4 +1,5 @@
 import { ChartSeriesParamInterface } from 'app/chart/chart-config.interface';
+import * as transition from 'd3-transition';
 
 export class ChartColumnSeries {
     target: any;
@@ -63,7 +64,9 @@ export class ChartColumnSeries {
       } else {
         rectElement.datum(value);
       }
+      const t = this._getTransition(this.displayStandard + index, 800);
       rectElement
+                .transition(t)
                 .attr('x', this.x)
                 .attr('y', this.y)
                 .attr('width', this.w)
@@ -71,13 +74,18 @@ export class ChartColumnSeries {
     }
 
     _createItem(value: any, index: number) {
-      console.log(index);
-      const rectElement: any = this.target.datum(value)
-                                        .append('rect')
-                                        .attr('class', this.displayStandard + index)
-                                        .attr('value', value)
-                                        .attr('fill', 'red');
+      const min: number = this.scaleY.domain()[0];
+      return this.target.datum(value)
+                        .append('rect')
+                        .attr('class', this.displayStandard + index)
+                        .attr('y', this.scaleY(min))
+                        .attr('height', 0)
+                        .attr('value', value)
+                        .attr('fill', 'red');
+    }
 
-      return rectElement;
+    _getTransition(name: string = '', duration: number = 1000): any {
+      return transition.transition(name)
+                       .duration(duration);
     }
 }
