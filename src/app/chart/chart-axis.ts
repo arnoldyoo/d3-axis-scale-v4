@@ -4,6 +4,7 @@ import {axisLeft, axisRight, axisBottom, axisTop} from 'd3-axis';
 export class ChartAxis {
   config: ChartAxisParamInterface;
   axe: any;
+
   constructor(config: ChartAxisParamInterface) {
     if (config) {
       this.config = config;

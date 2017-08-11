@@ -3,9 +3,6 @@ import { ChartCore } from './chart/chart-core';
 import { select } from 'd3-selection';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
-
-
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -28,7 +25,13 @@ export class AppComponent implements OnInit {
       info: {
         width: this.width,
         height: this.height,
-        target: this.svgTarget
+        target: this.svgTarget,
+        margin: {
+          top: 50,
+          bottom: 50,
+          left: 50,
+          right: 50
+        }
       },
       data: undefined,
       axis: [

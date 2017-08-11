@@ -10,6 +10,7 @@ export interface ChartInfoConfigInterface {
   width: number;
   height: number;
   target: any;
+  margin: any;
 }
 
 export interface ScaleParamInterface {

@@ -14,10 +14,9 @@ export class ChartCore {
   scales: any = {};
   axis: Array<any> = [];
   series: Array<any> = [];
-  config: any;
+  config: ChartConfigInterface;
   _dataProvider: Array<any>;
-  domain: Array<Array<any>> = [];
-  scaleFields: Array<string>;
+  scaleFields: Array<any>;
   target: any;
   axisGroupElement: any;
   seriesGroupElement: any;
@@ -29,14 +28,8 @@ export class ChartCore {
     if (chartConfig) {
       this.config = chartConfig;
       this.target = chartConfig.info.target;
-      this.margin = {
-        top: 50,
-        bottom: 50,
-        left: 50,
-        right: 50
-      }
-      this.width = this.config.info.width - (this.margin.left + this.margin.right),
-      this.height = this.config.info.height - (this.margin.top + this.margin.bottom),
+      this.margin = chartConfig.info.margin;
+      this._setRootContainerSize();
       this.dataProvider = chartConfig.data;
     }
   }
@@ -80,7 +73,6 @@ export class ChartCore {
       }
       this.scales[info.displayStandard] = new ChartScale(scaleConfig);
     });
-
   }
 
   _createAxis() {
@@ -143,18 +135,23 @@ export class ChartCore {
   }
 
   _setDefaultData(): Array<any> {
-        const testData: Array<any> = [];
-        for (let i = 0; i < 20; i++) {
-            testData.push(
-              {
-                category: 'A' + i,
-                datetime: new Date(2017, 0, i).getTime(),
-                numeric1: Math.round( Math.random() * 110  ),
-                numeric2: Math.round( Math.random() * 120  ),
-              });
-        }
-        return testData;
+    const testData: Array<any> = [];
+    for (let i = 0; i < 20; i++) {
+        testData.push(
+          {
+            category: 'A' + i,
+            datetime: new Date(2017, 0, i).getTime(),
+            numeric1: Math.round( Math.random() * 110  ),
+            numeric2: Math.round( Math.random() * 120  ),
+          });
     }
+    return testData;
+  }
+
+  _setRootContainerSize() {
+    this.width = this.config.info.width - (this.margin.left + this.margin.right);
+    this.height = this.config.info.height - (this.margin.top + this.margin.bottom);
+  }
 
 
 };

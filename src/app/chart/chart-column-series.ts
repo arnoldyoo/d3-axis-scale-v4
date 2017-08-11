@@ -9,20 +9,24 @@ export class ChartColumnSeries {
     y: number;
     w: number;
     h: number;
+
     constructor(config: ChartSeriesParamInterface) {
         this.config = config;
         // create series container
         this._createSeriesContainer(this.config.target);
         this._dataSetting();
     }
+
     _createSeriesContainer(parentTarget: any) {
       this.config.target = parentTarget.append('g').attr('class', `${this.config.displayStandard}`);
     }
+
     _dataSetting() {
       this.config.dataProvider.map((data: any, i: number) => {
         this._positionSetting(data, i);
       })
     }
+
     _positionSetting(data: any, index: number) {
       if (this.config.scaleX) {
         this.x = this.config.scaleX(data[this.config.fieldX]);
