@@ -33,10 +33,10 @@ export class AppComponent implements OnInit {
       data: undefined,
       axis: [
         {
-          field: 'category',
-          type: 'category',
-          position: 'xb',
-          displayStandard: 'category'
+          field: 'category', // for data mapping
+          type: 'category', // for axis type (linear, time, ordinal etc ...)
+          position: 'xb',  // for axis position
+          displayStandard: 'category' // for display asix
         },
         {
           field: 'numeric1',
@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
           fieldX: 'category',
           fieldY: 'numeric1',
           type: 'column',
-          displayStandard: 'numeric1'
+          displayStandard: 'numeric1' // for display field mapping. this case series show chart using numeric1 value
         }
       ]
     }

@@ -84,9 +84,7 @@ export class ChartCore {
   }
 
   _createAxis() {
-    this.axisGroupElement = this.target.append('g')
-            .attr('class', 'axis')
-            .attr('transform', 'translate(0,0)');
+    this._createAxisGroupContainer();
     this.config.axis.map((axis: ChartAxisConfigInterface) => {
       const data = this.dataProvider.map((d: any) => {
         return d[axis.displayStandard];
@@ -107,12 +105,15 @@ export class ChartCore {
     })
   }
 
-  _createSeries() {
-    this.seriesGroupElement = this.target.append('g')
-            .attr('class', 'series')
-            .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
-    this.config.series.map((series: ChartSeriesConfigInterface) => {
+  _createAxisGroupContainer() {
+    this.axisGroupElement = this.target.append('g')
+                .attr('class', 'axis')
+                .attr('transform', 'translate(0,0)');
+  }
 
+  _createSeries() {
+    this._createSeriesGroupContainer();
+    this.config.series.map((series: ChartSeriesConfigInterface) => {
       const seriesConfig: ChartSeriesParamInterface = {
         width: this.width,
         height: this.height,
@@ -135,6 +136,12 @@ export class ChartCore {
     })
   }
 
+  _createSeriesGroupContainer() {
+    this.seriesGroupElement = this.target.append('g')
+          .attr('class', 'series')
+          .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
+  }
+
   _setDefaultData(): Array<any> {
         const testData: Array<any> = [];
         for (let i = 0; i < 20; i++) {
@@ -148,4 +155,6 @@ export class ChartCore {
         }
         return testData;
     }
+
+
 };

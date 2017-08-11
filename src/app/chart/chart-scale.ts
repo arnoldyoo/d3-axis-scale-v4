@@ -3,56 +3,49 @@ import {scaleLinear, scaleOrdinal, scaleTime, scaleBand} from 'd3-scale';
 import {max, min} from 'd3-array';
 
 export class ChartScale {
-  type: string;
-  width: number;
-  height: number;
+  config: ScaleParamInterface;
   scale: any;
   range: Array<number> = [];
-  data: Array<any>;
   domain: Array<any> = [];
-  position: string;
 
   constructor(config: ScaleParamInterface) {
-    this.type = config.type;
-    this.data = config.data;
-    this.width = config.width;
-    this.height = config.height;
-    this.position = config.position;
+    this.config = config;
     this._setRange();
     this._generateScale();
   }
 
   _generateScale() {
-    if (this.type === 'numeric') {
+    if (this.config.type === 'numeric') {
       // this.domain.push(0);
-      this.domain.push(min(this.data));
-      const maxData = max(this.data);
-      this.domain.push(maxData + (maxData * 0.1));
+      this.domain.push(min(this.config.data));
+      const maxData = max(this.config.data);
+      this.domain.push(maxData + (+maxData * 0.1));
       this.scale = scaleLinear()
                               .domain(this.domain)
-                              .range(this.range);
+                              .range(this.range)
+                              .nice();
 
-    } else if (this.type === 'category') {
+    } else if (this.config.type === 'category') {
       this.scale = scaleBand()
-                            .domain(this.data)
+                            .domain(this.config.data)
                             .range([this.range[0], this.range[1]])
                             .padding(.2);
     } else {
-      const startDay: Date = this.data[0];
-      const endDayIndex: number = this.data.length - 1;
-      const endDay: Date = this.data[endDayIndex];
+      const startDay: Date = this.config.data[0];
+      const endDayIndex: number = this.config.data.length - 1;
+      const endDay: Date = this.config.data[endDayIndex];
       this.scale = scaleTime()
                             .domain([startDay, endDay])
-                            .range(this.range)
+                            .range(this.range);
     }
   }
 
   _setRange() {
-    if (this.position.includes('x')) {
+    if (this.config.position.includes('x')) {
         this.range.push(0);
-        this.range.push(this.width);
+        this.range.push(this.config.width);
     } else {
-        this.range.push(this.height);
+        this.range.push(this.config.height);
         this.range.push(0);
     }
   }
