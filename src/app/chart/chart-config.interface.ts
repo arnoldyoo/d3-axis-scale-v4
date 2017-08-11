@@ -12,6 +12,14 @@ export interface ChartInfoConfigInterface {
   target: any;
 }
 
+export interface ScaleParamInterface {
+  data: Array<any> | any;
+  type: string;
+  position: string;
+  width: number;
+  height: number;
+}
+
 export interface ChartAxisConfigInterface {
   field: string | Array<string>;
   type: string;
@@ -46,10 +54,3 @@ export interface ChartSeriesParamInterface extends ChartSeriesConfigInterface {
   height: number;
 }
 
-export interface ScaleParamInterface {
-  data: Array<any> | any;
-  type: string;
-  position: string;
-  width: number;
-  height: number;
-}
