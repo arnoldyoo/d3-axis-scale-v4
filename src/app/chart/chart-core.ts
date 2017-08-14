@@ -9,6 +9,7 @@ import {
 } from './chart-config.interface';
 import { ChartAxis } from './chart-axis';
 import { ChartScale } from './chart-scale';
+import { select } from 'd3-selection';
 
 export class ChartCore {
   scales: any = {};
@@ -27,7 +28,8 @@ export class ChartCore {
   constructor(chartConfig: ChartConfigInterface) {
     if (chartConfig) {
       this.config = chartConfig;
-      this.target = chartConfig.info.target;
+      this._createRootSvg(this.config.info.selector);
+      // this.target = chartConfig.info.target;
       this.margin = chartConfig.info.margin;
       this._setRootContainerSize();
       this.dataProvider = chartConfig.data;
@@ -47,6 +49,10 @@ export class ChartCore {
     this._createScale();
     this._createAxis();
     this._createSeries();
+  }
+
+  _createRootSvg(selector: string) {
+    this.target = select('svg').attr('width', this.config.info.width).attr('height', this.config.info.height);
   }
 
   _createScale() {

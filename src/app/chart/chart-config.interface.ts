@@ -9,7 +9,7 @@ export interface ChartConfigInterface {
 export interface ChartInfoConfigInterface {
   width: number;
   height: number;
-  target: any;
+  selector: string;
   margin: any;
 }
 

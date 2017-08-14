@@ -19,13 +19,12 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.width = this.svgContariner.nativeElement.offsetWidth;
     this.height = this.svgContariner.nativeElement.offsetHeight;
-    this.svgTarget = select('svg').attr('width', this.width).attr('height', this.height);
-
+    // this.svgTarget = select('svg').attr('width', this.width).attr('height', this.height);
     const config: ChartConfigInterface = {
       info: {
         width: this.width,
         height: this.height,
-        target: this.svgTarget,
+        selector: 'svgContainer',
         margin: {
           top: 50,
           bottom: 50,

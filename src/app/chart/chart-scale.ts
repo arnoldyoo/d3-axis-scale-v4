@@ -1,5 +1,5 @@
 import { ScaleParamInterface } from './chart-config.interface';
-import {scaleLinear, scaleOrdinal, scaleTime, scaleBand} from 'd3-scale';
+import {scaleLinear, scaleTime, scaleBand} from 'd3-scale';
 import {max, min} from 'd3-array';
 
 export class ChartScale {
