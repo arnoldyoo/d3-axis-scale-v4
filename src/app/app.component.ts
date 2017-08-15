@@ -64,6 +64,16 @@ export class AppComponent implements OnInit {
           fieldX: 'category',
           fieldY: 'numeric1',
           type: 'column',
+          displayStandard: 'numeric1', // for display field mapping. this case series show chart using numeric1 value
+          textLabel: {
+            show: true,
+            orient: 'top'
+          }
+        },
+        {
+          fieldX: 'category',
+          fieldY: 'numeric1',
+          type: 'line',
           displayStandard: 'numeric1' // for display field mapping. this case series show chart using numeric1 value
         }
       ]

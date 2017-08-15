@@ -4,6 +4,7 @@ import {axisLeft, axisRight, axisBottom, axisTop} from 'd3-axis';
 export class ChartAxis {
   config: ChartAxisParamInterface;
   axe: any;
+  target: any;
 
   constructor(config: ChartAxisParamInterface) {
     if (config) {
@@ -15,9 +16,9 @@ export class ChartAxis {
   }
 
   _createAxisContainer(parentTarget: any) {
-    this.config.target = parentTarget
-                                    .append('g')
-                                    .attr('class', `${this.config.displayStandard} ${this.config.position}`);
+    this.target = parentTarget
+                              .append('g')
+                              .attr('class', `${this.config.displayStandard} ${this.config.position}`);
   }
 
   _createAxis() {
@@ -40,10 +41,10 @@ export class ChartAxis {
       px = this.config.margin.left;
       py = this.config.margin.top;
     }
-    this.config.target.attr('transform', `translate(${px}, ${py})`);
+    this.target.attr('transform', `translate(${px}, ${py})`);
   }
 
   _makeAxisLabel() {
-    this.config.target.call(this.axe);
+    this.target.call(this.axe);
   }
 }

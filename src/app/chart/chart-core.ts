@@ -1,3 +1,4 @@
+import { ChartLineSeries } from './chart-line-series';
 import { ChartColumnSeries } from './chart-column-series';
 import {
   ChartConfigInterface,
@@ -122,11 +123,18 @@ export class ChartCore {
         displayStandard: series.displayStandard,
         fieldX: series.fieldX,
         fieldY: series.fieldY,
-        type: series.type
+        type: series.type,
       }
+
+      if (series.textLabel) {
+        seriesConfig.textLabel = series.textLabel;
+      }
+
       let seriesTemp: any;
       if (series.type === 'column') {
         seriesTemp = new ChartColumnSeries(seriesConfig);
+      } else if (series.type === 'line') {
+        seriesTemp = new ChartLineSeries(seriesConfig);
       } else {
 
       }
