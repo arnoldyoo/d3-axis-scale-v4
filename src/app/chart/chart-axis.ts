@@ -1,10 +1,13 @@
 import { ChartAxisConfigInterface, ChartAxisParamInterface } from './chart-config.interface';
 import {axisLeft, axisRight, axisBottom, axisTop} from 'd3-axis';
+import { min } from 'd3-array';
+import { select } from 'd3-selection';
 
 export class ChartAxis {
   config: ChartAxisParamInterface;
   axe: any;
   target: any;
+  _zero: any;
 
   constructor(config: ChartAxisParamInterface) {
     if (config) {
@@ -12,6 +15,9 @@ export class ChartAxis {
       this._createAxisContainer(this.config.target);
       this._createAxis();
       this._makeAxisLabel();
+      if (this.config.type === 'numeric') {
+        this._makeZeroLine();
+      }
     }
   }
 
@@ -46,5 +52,35 @@ export class ChartAxis {
 
   _makeAxisLabel() {
     this.target.call(this.axe);
+  }
+
+  _makeZeroLine() {
+    const minValue = +min(this.config.data);
+    if (minValue < 0) {
+      if (!this._zero) {
+        const rootSvg: any = select(this.config.target._groups[0][0].nearestViewportElement);
+        this._zero = rootSvg.append('g').attr('class', 'zero');
+        this._zero.append('line');
+      }
+      this._zero.attr('transform', `translate(${this.config.margin.left}, ${this.config.scale(0) + this.config.margin.top})`);
+      const median = this._zero.select('line');
+      if (this.config.position.includes('y')) {
+        this._zero.attr('transform', `translate(${this.config.margin.left}, ${this.config.scale(0) + this.config.margin.top})`);
+        median.attr('x1', 0)
+            .attr('y1', 0)
+            .attr('x2', this.config.width)
+            .attr('y2', 0)
+            .attr('stroke-width', 1)
+            .attr('stroke', 'lightgrey');
+      } else {
+        this._zero.attr('transform', `translate(${this.config.scale(0) + this.config.margin.left}, ${this.config.margin.top})`);
+        median.attr('x1', 0)
+            .attr('y1', 0)
+            .attr('x2', 0)
+            .attr('y2', this.config.height)
+            .attr('stroke-width', 1)
+            .attr('stroke', 'lightgrey');
+      }
+    }
   }
 }

@@ -155,7 +155,7 @@ export class ChartCore {
           {
             category: 'A' + i,
             datetime: new Date(2017, 0, i).getTime(),
-            numeric1: Math.round( Math.random() * 110  ),
+            numeric1: Math.round( Math.random() * 110 ) - 30,
             numeric2: Math.round( Math.random() * 120  ),
           });
     }

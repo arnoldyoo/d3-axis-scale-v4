@@ -1,6 +1,7 @@
 import { ChartSeriesConfigInterface } from './chart-config.interface';
 import { ChartSeriesParamInterface } from 'app/chart/chart-config.interface';
 import * as transition from 'd3-transition';
+import { select } from 'd3-selection';
 
 export class ChartColumnSeries {
     config: ChartSeriesParamInterface;
@@ -34,8 +35,22 @@ export class ChartColumnSeries {
         this.w = this.config.scaleX.bandwidth();
       }
       if (this.config.scaleY) {
-        this.y = this.config.scaleY(data[this.config.fieldY]);
-        this.h = this.config.scaleY.range()[0] - this.y;
+        const min: number = this.config.scaleY.domain()[0];
+        const max: number = this.config.scaleY.domain()[1];
+        const value: number = data[this.config.fieldY];
+        if (min < 0) {
+          if (value < 0) {
+              this.y = this.config.scaleY(0);
+              this.h = this.config.scaleY(value + max);
+          } else {
+              this.y = this.config.scaleY(value);
+              const compare: number = this.config.scaleY(value + min);
+              this.h = this.config.scaleY.range()[0] - compare;
+          }
+        } else {
+          this.y = this.config.scaleY(value);
+          this.h = this.config.scaleY.range()[0] - this.y;
+        }
       }
       this._createSeries(data[this.config.fieldY], index);
     }
@@ -65,7 +80,7 @@ export class ChartColumnSeries {
         }
         this._createTextLabel(this.config.textLabel.orient, labelInfo, rectElement);
       }
-      
+
     }
 
     _createItem(value: any, index: number) {
@@ -83,7 +98,7 @@ export class ChartColumnSeries {
       return transition.transition(name)
                        .duration(duration);
     }
-    
+
     _createTextLabel(orient: string, labelInfo: any, seriesElement) {
       const targetWidth: number = labelInfo.width;
       const targetHeight: number = labelInfo.height;
@@ -91,37 +106,28 @@ export class ChartColumnSeries {
       const targetY: number = labelInfo.y;
       const value: any = labelInfo.value;
 
-      console.log('value', value);
-      console.log('targetX', targetX);
-      console.log('targetY', targetY);
-      console.log('targetWidth', targetWidth);
-      console.log('targetHeight', targetHeight);
-
-
       let textLabel: any = this.target.select(`.${seriesElement.attr('class')}label`);
 
       if (!textLabel._groups[0][0]) {
-          textLabel = this.target.append('text')
-                                  .text(value)
-                                  .attr('fill', 'black')
-                                  .attr('class',`${seriesElement.attr('class')}label`);
+        textLabel = this.target.append('text')
+                                .text(value)
+                                .attr('fill', 'black')
+                                .attr('class', `${seriesElement.attr('class')}label`);
       }
-      const labelWidth: number = textLabel.node().getBoundingClientRect().width;
+      const labelWidth: number = textLabel._groups[0][0].getBoundingClientRect().width;
+      // console.log(textLabel.node().getBoundingClientRect().width);
 
       if (orient === 'top') {
-          const x: number = targetX + (targetWidth/2) - (labelWidth/2);
-          const y: number =  targetY - 3;
-          // textLabel.attr({
-              
-          // });
-          textLabel.attr('x', x);
-          textLabel.attr('y', y);
+        const x: number = targetX + (targetWidth / 2) - (labelWidth / 2);
+        const y: number =  targetY - 3;
+        textLabel.attr('x', x);
+        textLabel.attr('y', y);
       } else if (orient === 'right') {
-          textLabel.attr({
-              x: targetWidth + 3,
-              y: targetY + (targetHeight/2),
-              dy: '.35em'
-          });
+        textLabel.attr({
+            x: targetWidth + 3,
+            y: targetY + (targetHeight / 2),
+            dy: '.35em'
+        });
       }
     }
 }

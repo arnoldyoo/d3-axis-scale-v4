@@ -1,5 +1,5 @@
 import { ChartSeriesParamInterface } from 'app/chart/chart-config.interface';
-import { line, curveMonotoneX } from 'd3-shape';
+import { line, curveMonotoneX, curveLinear, curveCatmullRom } from 'd3-shape';
 
 export class ChartLineSeries {
     config: ChartSeriesParamInterface;
@@ -16,15 +16,15 @@ export class ChartLineSeries {
     }
 
     _dataSetting() {
-        if(this.config.dataProvider) {
+        if (this.config.dataProvider) {
             const index: number = 0;
             this._positionSetting(index);
         }
     }
-    
+
     _positionSetting(index: number) {
         this.lineShape = line().x((d: any) => {
-            let returnX: number = 0;;
+            let returnX: number = 0;
             if (this.config.scaleX.bandwidth) {
                 returnX = this.config.scaleX.bandwidth() / 2 + this.config.scaleX(d[this.config.fieldX]);
             } else {
@@ -33,7 +33,7 @@ export class ChartLineSeries {
             return returnX;
         }).y((d: any) => {
             return this.config.scaleY(d[this.config.fieldY]);
-        }).curve(curveMonotoneX)
+        }).curve(curveCatmullRom);
 
         this._createSeries(index);
     }
@@ -55,7 +55,6 @@ export class ChartLineSeries {
                             .attr('class', this.config.displayStandard + index)
                             .style('fill', 'none')
                             .style('stroke-width', 2)
-                            .style('stroke', 'black');
+                            .style('stroke', 'lightgreen');
     }
-
 }

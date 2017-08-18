@@ -30,6 +30,7 @@ export class ChartScale {
                             .domain(this.config.data)
                             .range([this.range[0], this.range[1]])
                             .padding(.2);
+
     } else {
       const startDay: Date = this.config.data[0];
       const endDayIndex: number = this.config.data.length - 1;
