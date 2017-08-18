@@ -116,18 +116,18 @@ export class ChartColumnSeries {
       }
       const labelWidth: number = textLabel._groups[0][0].getBoundingClientRect().width;
       // console.log(textLabel.node().getBoundingClientRect().width);
-
       if (orient === 'top') {
         const x: number = targetX + (targetWidth / 2) - (labelWidth / 2);
         const y: number =  targetY - 3;
-        textLabel.attr('x', x);
-        textLabel.attr('y', y);
+        textLabel.attr('x', x)
+                 .attr('y', y);
       } else if (orient === 'right') {
-        textLabel.attr({
-            x: targetWidth + 3,
-            y: targetY + (targetHeight / 2),
-            dy: '.35em'
-        });
+        const x: number = targetWidth + 3;
+        const y: number = targetY + (targetHeight / 2);
+        const dy: string = '.35em';
+        textLabel.attr('x', x)
+                 .attr('y', y)
+                 .attr('dy', dy);
       }
     }
 }

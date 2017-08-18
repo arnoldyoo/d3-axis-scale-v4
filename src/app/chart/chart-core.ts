@@ -30,7 +30,6 @@ export class ChartCore {
     if (chartConfig) {
       this.config = chartConfig;
       this._createRootSvg(this.config.info.selector);
-      // this.target = chartConfig.info.target;
       this.margin = chartConfig.info.margin;
       this._setRootContainerSize();
       this.dataProvider = chartConfig.data;
@@ -53,7 +52,10 @@ export class ChartCore {
   }
 
   _createRootSvg(selector: string) {
-    this.target = select('svg').attr('width', this.config.info.width).attr('height', this.config.info.height);
+    this.target = select('#'+this.config.info.selector)
+                      .append('svg')
+                      .attr('width', this.config.info.width)
+                      .attr('height', this.config.info.height);
   }
 
   _createScale() {
