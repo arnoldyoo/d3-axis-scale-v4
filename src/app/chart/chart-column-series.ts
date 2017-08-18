@@ -41,11 +41,13 @@ export class ChartColumnSeries {
         if (min < 0) {
           if (value < 0) {
               this.y = this.config.scaleY(0);
-              this.h = this.config.scaleY(value + max);
+              // this.h = this.config.scaleY(value + max)
+              this.h = this.config.scaleY(0) - this.config.scaleY(-1 * value);
           } else {
               this.y = this.config.scaleY(value);
-              const compare: number = this.config.scaleY(value + min);
-              this.h = this.config.scaleY.range()[0] - compare;
+              // const compare: number = this.config.scaleY(value + min);
+              // this.h = this.config.scaleY.range()[0] - compare;
+              this.h = this.config.scaleY(0) - this.config.scaleY(value);
           }
         } else {
           this.y = this.config.scaleY(value);
